@@ -13,6 +13,9 @@ function message_ctools_plugin_api($module, $api) {
   if ($module == 'message' && $api == 'plugins') {
     return array('version' => 1);
   }
+  elseif ($module == 'export_ui' && $api == 'plugins') {
+    return array('version' => 1);
+  }
 }
 
 /**
@@ -34,6 +37,21 @@ function message_ctools_plugin_plugins() {
 function message_message_plugins() {
   module_load_include('inc', 'message', '/includes/message.plugins');
   return _message_message_plugins();
+}
+
+/**
+ * Implementation of hook_export_ui_plugins().
+ *
+ * This is a ctools plugins hook.
+ */
+function message_export_ui_plugins() {
+  $plugins = array();
+  $plugins['message'] = array(
+    'name' => 'message',
+    'title' => t('Message'),
+  );
+
+  return $plugins;
 }
 
 /**
