@@ -49,6 +49,12 @@ function message_export_ui_plugins() {
   $plugins['message'] = array(
     'name' => 'message',
     'title' => t('Message'),
+    'handler' => array(
+      'path' => drupal_get_path('module', 'export_ui') .'/plugins',
+      'file' => 'message_plugin_export_ui.inc',
+      'class' => 'message_plugin_export_ui',
+      'parent' => 'export_ui_plugin',
+    ),
   );
 
   return $plugins;
