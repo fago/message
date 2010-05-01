@@ -20,7 +20,8 @@ class message_plugin_export_ui extends export_ui_plugin {
    * Provide a form to edit options for this plugin.
    */
   function options_form(&$form, &$form_state, $op, $export) {
-     $form['info']['description'] = array(
+    parent::options_form($form, $form_state, $op, $export);
+    $form['info']['description'] = array(
       '#title' => t('Description'),
       '#type' => 'textfield',
       '#default_value' => $this->options['description'],
