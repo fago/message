@@ -33,6 +33,7 @@ class message_plugin_export_ui extends export_ui_plugin {
       '#type' => 'textfield',
       '#default_value' => $this->options['message'],
       '#description' => t('The message'),
+      '#required' => TRUE,
     );
   }
 
