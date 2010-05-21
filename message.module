@@ -13,21 +13,7 @@ function message_ctools_plugin_api($module, $api) {
   if ($module == 'message' && $api == 'plugins') {
     return array('version' => 1);
   }
-  elseif ($module == 'export_ui' && $api == 'plugins') {
-    return array('version' => 1);
-  }
 }
-
-/**
- * Implementation of hook_ctools_plugin_plugins().
- */
-function message_ctools_plugin_plugins() {
-  return array(
-    'cache' => TRUE,
-    'use hooks' => TRUE,
-  );
-}
-
 
 /**
  * Implementation of hook_message_plugins().
@@ -58,6 +44,15 @@ function message_export_ui_plugins() {
   );
 
   return $plugins;
+}
+
+/**
+ * Implementation of hook_ctools_plugin_directory().
+ */
+function message_ctools_plugin_directory($module, $type) {
+  if ($type =='export_ui') {
+    return 'plugins/export_ui';
+  }
 }
 
 /**

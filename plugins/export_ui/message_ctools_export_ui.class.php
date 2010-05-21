@@ -4,7 +4,7 @@
 /**
  * Base class for export UI.
  */
-class message_plugin_export_ui extends export_ui_plugin {
+class message_ctools_export_ui extends ctools_export_ui {
 
   /**
    * Information about options for all kinds of purposes will be held here.
