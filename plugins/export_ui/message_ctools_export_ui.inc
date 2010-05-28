@@ -16,19 +16,19 @@ $plugin = array(
   ),
 );
 
-function message_ctools_export_ui_form(&$form) {
+function message_ctools_export_ui_form(&$form, $plugin_name, $op, $export) {
   $form += array('info' => array('description' => ''), 'message' => '');
   $form['info']['description'] = array(
     '#title' => t('Description'),
     '#type' => 'textfield',
-    '#default_value' => $form['info']['description'],
+    '#default_value' => !empty($export->description) ? $export->description : '',
     '#description' => t('The message description.'),
   );
 
   $form['message'] = array(
     '#title' => t('Message'),
     '#type' => 'textfield',
-    '#default_value' => $form['message'],
+    '#default_value' => !empty($export->message) ? $export->message : '',
     '#description' => t('The message'),
     '#required' => TRUE,
   );
