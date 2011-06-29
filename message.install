@@ -67,7 +67,7 @@ function message_schema() {
         'default' => '',
       ),
       'description' => array(
-        'description' => 'Description for this message.',
+        'description' => 'Description for this message type category.',
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
