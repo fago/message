@@ -30,6 +30,30 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
     $message_type->name .= '_clone';
   }
 
+  $message_type->category = 'message_type';
+  if ($op == 'add') {
+    // Check if the message type category is passed via URL.
+    $item = menu_get_item();
+    if (!empty($item['page_arguments'][3])) {
+      $name = str_replace('-', '_', $item['page_arguments'][3]);
+      if ($message_category = message_type_category_load($name)) {
+        $message_type->category = $message_category->category;
+
+        // Let user know they add a non-default message type.
+        $desc = !empty($message_category->description) ? $message_category->description : $message_type->category;
+        $form['category_description'] = array(
+          '#markup' => t('Message category: @category', array('@category' => $desc)),
+          '#weight' => -10,
+        );
+      }
+    }
+  }
+
+  $form['category'] = array(
+    '#type' => 'value',
+    '#value' => $message_type->category,
+  );
+
   $form['description'] = array(
     '#title' => t('Description'),
     '#type' => 'textfield',
@@ -49,11 +73,6 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
     ),
     '#description' => t('A unique machine-readable name for this message type. It must only contain lowercase letters, numbers, and underscores.'),
     '#weight' => -5,
-  );
-
-  $form['category'] = array(
-    '#type' => 'value',
-    '#value' => isset($message_type->category) ? $message_type->category : 'message_type',
   );
 
   field_attach_form('message_type', $message_type, $form, $form_state);
