@@ -30,7 +30,6 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
     $message_type->name .= '_clone';
   }
 
-  $message_type->category = 'message_type';
   if ($op == 'add') {
     // Check if the message type category is passed via URL.
     $item = menu_get_item();
