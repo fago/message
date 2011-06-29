@@ -49,7 +49,7 @@ function message_entity_info() {
     'entity keys' => array(
       'id' => 'id',
       'label' => 'description',
-      'name' => 'name',
+      'name' => 'category',
     ),
     'exportable' => TRUE,
     'export' => array(
@@ -133,6 +133,12 @@ function message_entity_info() {
  * message types needs the entity info too.
  */
 function message_entity_info_alter(&$entity_info) {
+  foreach (message_type_category_load() as $category_name => $category) {
+    $entity_info['message_type']['bundles'][$category_name] = array(
+      //@todo do we need a short label too?
+      'label' => $category->category,
+    );
+  }
   foreach (message_type_load() as $type_name => $type) {
     $entity_info['message']['bundles'][$type_name] = array(
       //@todo do we need a short label too?
