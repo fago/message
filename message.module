@@ -244,6 +244,8 @@ class MessageType extends Entity {
   public $argument_keys = array();
 
   public function __construct($values = array()) {
+    // Set the default bundle of the message type.
+    $values += array('category' => 'message_type');
     parent::__construct($values, 'message_type');
   }
 
@@ -281,9 +283,6 @@ function message_type_create($name, $values = array()) {
     throw new Exception('Message type ' . check_plain($name) . ' already exists.');
   }
   $values['name'] = $name;
-
-  // Set the default bundle of the mesage type.
-  $values += array('category' => 'message_type');
   $return = entity_create('message_type', $values);
 
   return $return;
