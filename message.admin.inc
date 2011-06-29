@@ -51,6 +51,11 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
     '#weight' => -5,
   );
 
+  $form['category'] = array(
+    '#type' => 'value',
+    '#value' => isset($message_type->category) ? $message_type->category : 'message_type',
+  );
+
   field_attach_form('message_type', $message_type, $form, $form_state);
 
   $form['argument_keys'] = array(
