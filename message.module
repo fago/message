@@ -169,12 +169,12 @@ class MessageTypeCategory extends Entity {
 }
 
 /**
- * Creates a new message type.
+ * Creates a new message type category.
  *
- * If a message type already exists, an exception will be thrown.
+ * If a message type category already exists, an exception will be thrown.
  *
- * @return MessageType
- *   Returns a new message type object.
+ * @return MessageTypeCategory
+ *   Returns a new message type category object.
  */
 function message_type_category_create($category, $values = array()) {
   // Make sure the message type doesn't already exist, to prevent duplicate key
@@ -189,15 +189,15 @@ function message_type_category_create($category, $values = array()) {
 }
 
 /**
- * Message type loader.
+ * Message type category loader.
  *
- * @param $type_name
- *   (optional) The name for this message type. If no type is given all existing
- *   types are returned.
+ * @param $name
+ *   (optional) The name for this message type category. If no type is given all
+ *   existing message types category are returned.
  *
  * @return MessageType
- *   Returns a fully-loaded message type definition if a type name is passed.
- *   Else an array containing all types is returned.
+ *   Returns a fully-loaded message type category definition if a name is
+ *   passed. Else an array containing all message types category is returned.
  */
 function message_type_category_load($name = NULL) {
   // Replace dashes with underscores so this can be used as menu argument
@@ -210,10 +210,10 @@ function message_type_category_load($name = NULL) {
 }
 
 /**
- * Inserts or updates a message object into the database.
+ * Inserts or updates a message type category object into the database.
  *
  * @param $message
- *   The message object to be inserted.
+ *   The message type category object to be inserted.
  *
  * @return
  *   Failure to write a record will return FALSE. Otherwise SAVED_NEW or
@@ -224,10 +224,10 @@ function message_type_category_save($message) {
 }
 
 /**
- * Deletes an existing message.
+ * Deletes an existing message type category.
  *
  * @param $message
- *   The message object to be deleted.
+ *   The message type category object to be deleted.
  */
 function message_type_category_delete($message) {
   return entity_delete('message_type_category', $message);
@@ -290,7 +290,7 @@ function message_type_create($name, $values = array()) {
 /**
  * Message type loader.
  *
- * @param $type_name
+ * @param $name
  *   (optional) The name for this message type. If no type is given all existing
  *   types are returned.
  *
