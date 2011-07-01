@@ -51,6 +51,8 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
     '#weight' => -5,
   );
 
+  // We might have gotten the message type category via ajax, so set it in the
+  // message type entity.
   if (!empty($form_state['values']['message_type_category'])) {
     $message_type->category = $form_state['values']['message_type_category'];
   }
@@ -89,6 +91,12 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
       '#markup' => $value,
     );
   }
+
+  // FIXME: Why is this needed?
+  $form['category'] = array(
+    '#type' => 'value',
+    '#value' => $message_type->category,
+  );
 
   $form['message_type_fields'] = array(
     '#prefix' => '<div id="message-type-wrapper">',
@@ -138,6 +146,10 @@ function message_type_fields_ajax_callback(array $form, array &$form_state) {
  * Validation callback.
  */
 function message_type_form_validate($form, &$form_state) {
+  // Normalize $form_state to pass the fields as expected.
+  foreach ($form_state['values']['message_type_fields'] as $key => $value) {
+    $form_state['message_type']->{$key} = $value;
+  }
   entity_form_field_validate('message_type', $form, $form_state);
 }
 
