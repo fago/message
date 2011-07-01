@@ -242,6 +242,7 @@ class MessageType extends Entity {
   public $name;
   public $description = '';
   public $argument_keys = array();
+  // Set the default message type category of the message type.
   public $category = 'message_type';
 
   public function __construct($values = array()) {

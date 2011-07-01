@@ -30,29 +30,6 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
     $message_type->name .= '_clone';
   }
 
-  if ($op == 'add') {
-    // Check if the message type category is passed via URL.
-    $item = menu_get_item();
-    if (!empty($item['page_arguments'][3])) {
-      $name = str_replace('-', '_', $item['page_arguments'][3]);
-      if ($message_category = message_type_category_load($name)) {
-        $message_type->category = $message_category->category;
-
-        // Let user know they add a non-default message type.
-        $desc = !empty($message_category->description) ? $message_category->description : $message_type->category;
-        $form['category_description'] = array(
-          '#markup' => t('Message category: @category', array('@category' => $desc)),
-          '#weight' => -10,
-        );
-      }
-    }
-  }
-
-  $form['category'] = array(
-    '#type' => 'value',
-    '#value' => $message_type->category,
-  );
-
   $form['description'] = array(
     '#title' => t('Description'),
     '#type' => 'textfield',
@@ -74,7 +51,52 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
     '#weight' => -5,
   );
 
-  field_attach_form('message_type', $message_type, $form, $form_state);
+  if (!empty($form_state['values']['message_type_category'])) {
+    $message_type->category = $form_state['values']['message_type_category'];
+  }
+
+  if ($op == 'add') {
+    // Get all the message type category, and allow user to choose one using ajax.
+    $options = array();
+    $options['message_type'] = t('Default message type category');
+    foreach (message_type_category_load() as $message_category) {
+      $options[$message_category->category] = !empty($message_category->description) ? $message_category->description : $message_type->category;
+    }
+
+    $form['message_type_category'] = array(
+      '#title' => t('Message type category'),
+      '#type' => 'select',
+      '#options' => $options,
+      '#default_value' => $message_type->category,
+      '#description' => t('Select the message type category.'),
+      '#required' => TRUE,
+      '#ajax' => array(
+        'callback' => 'message_type_fields_ajax_callback',
+        'wrapper' => 'message-type-wrapper',
+      ),
+    );
+  }
+  else {
+    if ($message_category = message_type_category_load($message_type->category)) {
+      $value = !empty($message_category->description) ? check_plain($message_category->description) : check_plain($message_type->category);
+    }
+    else {
+      $value = t('Default message type category');
+    }
+    $form['message_type_category'] = array(
+      '#title' => t('Message type category'),
+      '#type' => 'item',
+      '#markup' => $value,
+    );
+  }
+
+  $form['message_type_fields'] = array(
+    '#prefix' => '<div id="message-type-wrapper">',
+    '#suffix' => '</div>',
+    '#tree' => TRUE,
+    '#parents' => array('message_type_fields'),
+  );
+  field_attach_form('message_type', $message_type, $form['message_type_fields'], $form_state);
 
   $form['argument_keys'] = array(
     '#title' => t('Replacement tokens'),
@@ -100,6 +122,16 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
     );
   }
   return $form;
+}
+
+/**
+ * AJAX callback to attach the message type fields to the form.
+ *
+ * Since the controlling logic for populating the form is in the form builder
+ * function, all we do here is select the element and return it to be updated.
+ */
+function message_type_fields_ajax_callback(array $form, array &$form_state) {
+  return $form['message_type_fields'];
 }
 
 /**
