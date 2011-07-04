@@ -92,7 +92,8 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
     );
   }
 
-  // FIXME: Why is this needed?
+  // Core helper function for validation an entity requires the bundle to be in
+  // the form values
   $form['category'] = array(
     '#type' => 'value',
     '#value' => $message_type->category,
@@ -140,17 +141,6 @@ function message_type_form($form, &$form_state, $message_type, $op = 'edit') {
  */
 function message_type_fields_ajax_callback(array $form, array &$form_state) {
   return $form['message_type_fields'];
-}
-
-/**
- * Validation callback.
- */
-function message_type_form_validate($form, &$form_state) {
-  // Normalize $form_state to pass the fields as expected.
-  foreach ($form_state['values']['message_type_fields'] as $key => $value) {
-    $form_state['message_type']->{$key} = $value;
-  }
-  entity_form_field_validate('message_type', $form, $form_state);
 }
 
 /**
