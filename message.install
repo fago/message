@@ -117,7 +117,7 @@ function message_schema() {
         'type' => 'varchar',
         'length' => 255,
         'not null' => TRUE,
-        'default' => '',
+        'default' => 'message_type',
       ),
       'description' => array(
         'description' => 'Description for this message type.',
@@ -308,6 +308,6 @@ function message_update_7003() {
     'type' => 'varchar',
     'length' => 255,
     'not null' => TRUE,
-    'default' => '',
+    'default' => 'message_type',
   ));
 }
